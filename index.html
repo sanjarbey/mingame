@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mine Game</title>
+    <style>
+        body { text-align: center; font-family: Arial, sans-serif; }
+        table { border-collapse: collapse; margin: auto; }
+        td { width: 30px; height: 30px; text-align: center; border: 1px solid black; cursor: pointer; }
+        td.mine { background-color: red; }
+        td.safe { background-color: lightgray; }
+    </style>
+</head>
+<body>
+    <h1>Mine Game</h1>
+    <table id="minefield"></table>
+    <script>
+        const rows = 5, cols = 5, mines = 5;
+        let minefield = document.getElementById("minefield");
+        let grid = Array(rows).fill().map(() => Array(cols).fill(0));
+
+        // Maydonga minalarni joylash
+        for (let i = 0; i < mines; i++) {
+            let r, c;
+            do {
+                r = Math.floor(Math.random() * rows);
+                c = Math.floor(Math.random() * cols);
+            } while (grid[r][c] === "M");
+            grid[r][c] = "M";
+        }
+
+        // Jadval yaratish
+        for (let r = 0; r < rows; r++) {
+            let row = minefield.insertRow();
+            for (let c = 0; c < cols; c++) {
+                let cell = row.insertCell();
+                cell.addEventListener("click", () => reveal(r, c));
+            }
+        }
+
+        function reveal(r, c) {
+            let cell = minefield.rows[r].cells[c];
+            if (grid[r][c] === "M") {
+                cell.classList.add("mine");
+                alert("O‘yinni yutqazdingiz!");
+                location.reload();
+            } else {
+                cell.classList.add("safe");
+                cell.innerHTML = "✓";
+            }
+        }
+    </script>
+</body>
+</html>
